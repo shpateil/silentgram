@@ -5,6 +5,7 @@ the official desktop application for the Telegram messaging service.
 For license and copyright information please follow this link:
 https://github.com/telegramdesktop/tdesktop/blob/master/LEGAL
 */
+Modified for silentgram (https://github.com/shpateil/silentgram), 2026-10-04.
 #include "core/update_checker.h"
 
 #include "platform/platform_specific.h"
@@ -1868,7 +1869,7 @@ void UpdateApplication() {
 			} else if (KSandbox::isSnap()) {
 				return "https://snapcraft.io/telegram-desktop";
 			}
-			return "https://t.me/AyuGramReleases";
+			return "https://github.com/shpateil/silentgram/releases";
 #endif // OS_WIN_STORE || OS_MAC_STORE
 		}();
 		UrlClickHandler::Open(url);

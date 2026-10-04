@@ -5,6 +5,7 @@ the official desktop application for the Telegram messaging service.
 For license and copyright information please follow this link:
 https://github.com/telegramdesktop/tdesktop/blob/master/LEGAL
 */
+Modified for silentgram (https://github.com/shpateil/silentgram), 2026-10-04.
 #include "tray.h"
 #include "tray_accounts_menu.h"
 
@@ -85,7 +86,7 @@ void Tray::rebuildMenu() {
 			_activeForTrayIconAction = Core::App().isActiveForTrayMenu();
 			return _activeForTrayIconAction
 				? tr::lng_minimize_to_tray(tr::now)
-				: tr::lng_open_from_tray(tr::now).replace("Telegram", "AyuGram");
+				: tr::lng_open_from_tray(tr::now).replace("Telegram", "silentgram");
 		});
 
 		_tray.addAction(
@@ -153,7 +154,7 @@ void Tray::rebuildMenu() {
 	auto quitText = _textUpdates.events(
 	) | rpl::map([=]
 	{
-		return tr::lng_quit_from_tray(tr::now).replace("Telegram", "AyuGram");
+		return tr::lng_quit_from_tray(tr::now).replace("Telegram", "silentgram");
 	});
 	_tray.addAction(std::move(quitText), [] { Core::Quit(); });
 

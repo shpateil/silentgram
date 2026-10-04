@@ -5,6 +5,7 @@ the official desktop application for the Telegram messaging service.
 For license and copyright information please follow this link:
 https://github.com/telegramdesktop/tdesktop/blob/master/LEGAL
 */
+Modified for silentgram (https://github.com/shpateil/silentgram), 2026-10-04.
 #include "platform/linux/tray_linux.h"
 
 #include "base/invoke_queued.h"
@@ -13,6 +14,7 @@ https://github.com/telegramdesktop/tdesktop/blob/master/LEGAL
 #include "core/application.h"
 #include "core/sandbox.h"
 #include "core/version.h"
+#include "ayu/ayu_settings.h"
 #include "platform/platform_specific.h"
 #include "ui/ui_utility.h"
 #include "ui/widgets/popup_menu.h"
@@ -123,7 +125,12 @@ QSize IconGraphic::dprSize(const QImage &image) const {
 void IconGraphic::updateState() {
 	_new.iconThemeName = QIcon::themeName();
 	_new.monochrome = Core::App().settings().trayIconMonochrome();
-	_new.counter = Core::App().unreadBadge();
+
+	// silentgram: счётчик в трее по умолчанию скрыт, остаётся точка.
+	// настройка ayu/hideNotificationBadge, по умолчанию включена.
+	// вернуть цифры — hideNotificationBadge: false в ayu_settings.json.
+	const auto hideCounter = AyuSettings::getInstance().hideNotificationBadge();
+	_new.counter = hideCounter ? 0 : Core::App().unreadBadge();
 	_new.muted = Core::App().unreadBadgeMuted();
 	_new.systemIcon = systemIcon();
 }

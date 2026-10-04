@@ -5,6 +5,7 @@ the official desktop application for the Telegram messaging service.
 For license and copyright information please follow this link:
 https://github.com/telegramdesktop/tdesktop/blob/master/LEGAL
 */
+Modified for silentgram (https://github.com/shpateil/silentgram), 2026-10-04.
 #include "boxes/about_box.h"
 
 #include "base/platform/base_platform_info.h"
@@ -44,18 +45,18 @@ rpl::producer<TextWithEntities> Text() {
 		lt_gpl_link,
 		rpl::single(Ui::Text::Link(
 			"GNU GPL",
-			"https://github.com/AyuGram/AyuGramDesktop/blob/dev/LICENSE")),
+			"https://github.com/shpateil/silentgram/blob/dev/LICENSE")),
 		lt_github_link,
 		rpl::single(Ui::Text::Link(
 			"GitHub",
-			"https://github.com/AyuGram/AyuGramDesktop")),
+			"https://github.com/shpateil/silentgram")),
 		tr::marked);
 }
 
 } // namespace
 
 void AboutBox(not_null<Ui::GenericBox*> box, Window::SessionController* controller) {
-	box->setTitle(rpl::single(u"AyuGram Desktop"_q));
+	box->setTitle(rpl::single(u"silentgram"_q));
 
 	auto layout = box->verticalLayout();
 
@@ -89,15 +90,6 @@ void AboutBox(not_null<Ui::GenericBox*> box, Window::SessionController* controll
 	addText(Text());
 
 	box->addButton(tr::lng_close(), [=] { box->closeBox(); });
-	box->addLeftButton(
-		rpl::single(QString("@AyuGramReleases")),
-		[box, controller]
-		{
-			box->closeBox();
-			controller->showPeerByLink(Window::PeerByLinkInfo{
-				.usernameOrId = QString("ayugramreleases"),
-			});
-		});
 
 	box->setWidth(st::aboutWidth);
 }

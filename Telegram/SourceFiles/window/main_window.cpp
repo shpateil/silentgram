@@ -5,6 +5,7 @@ the official desktop application for the Telegram messaging service.
 For license and copyright information please follow this link:
 https://github.com/telegramdesktop/tdesktop/blob/master/LEGAL
 */
+Modified for silentgram (https://github.com/shpateil/silentgram), 2026-10-04.
 #include "window/main_window.h"
 
 #include "api/api_updates.h"
@@ -865,7 +866,7 @@ void MainWindow::updateTitle() {
 		: Dialogs::Key();
 	const auto thread = key ? key.thread() : nullptr;
 	if (!thread) {
-		setTitle((user.isEmpty() ? u"AyuGram"_q : user) + added);
+		setTitle((user.isEmpty() ? u"silentgram"_q : user) + added);
 		return;
 	}
 	const auto history = thread->owningHistory();

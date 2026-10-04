@@ -15,7 +15,10 @@
 #include "features/translator/ayu_translator.h"
 #include "lang/lang_instance.h"
 #include "ui/chat/chat_style_radius.h"
+#include "window/themes/window_theme.h"
 #include "utils/rc_manager.h"
+
+#include <QFile>
 
 #ifdef Q_OS_WIN
 #include "ayu/utils/windows_utils.h"

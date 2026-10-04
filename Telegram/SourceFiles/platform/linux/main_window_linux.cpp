@@ -5,6 +5,7 @@ the official desktop application for the Telegram messaging service.
 For license and copyright information please follow this link:
 https://github.com/telegramdesktop/tdesktop/blob/master/LEGAL
 */
+Modified for silentgram (https://github.com/shpateil/silentgram), 2026-10-04.
 #include "platform/linux/main_window_linux.h"
 
 #include "platform/linux/specific_linux.h"
@@ -221,7 +222,7 @@ void MainWindow::createGlobalMenu() {
 		});
 
 	auto quit = file->addAction(
-		tr::lng_mac_menu_quit_telegram(tr::now, lt_telegram, u"AyuGram"_q),
+		tr::lng_mac_menu_quit_telegram(tr::now, lt_telegram, u"silentgram"_q),
 		this,
 		[=] { quitFromTray(); },
 		QKeySequence::Quit);
@@ -420,7 +421,7 @@ void MainWindow::createGlobalMenu() {
 		tr::lng_mac_menu_about_telegram(
 			tr::now,
 			lt_telegram,
-			u"AyuGram"_q),
+			u"silentgram"_q),
 		[=] {
 			ensureWindowShown();
 			controller().show(Box(AboutBox, sessionController()));

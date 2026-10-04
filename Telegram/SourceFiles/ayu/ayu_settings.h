@@ -1,3 +1,4 @@
+Modified for silentgram (https://github.com/shpateil/silentgram), 2026-10-04.
 // This is the source code of AyuGram for Desktop.
 //
 // We do not and cannot prevent the use of our code,
@@ -691,7 +692,7 @@ private:
 	rpl::variable<bool> _hidePremiumStatuses = false;
 	rpl::variable<QString> _monoFont;
 	rpl::variable<bool> _hideNotificationCounters = false;
-	rpl::variable<bool> _hideNotificationBadge = false;
+	rpl::variable<bool> _hideNotificationBadge = true;
 	rpl::variable<bool> _hideAllChatsFolder = false;
 	rpl::variable<ChannelBottomButton> _channelBottomButton = ChannelBottomButton::DiscussWithFallback;
 	rpl::variable<bool> _quickAdminShortcuts = true;
