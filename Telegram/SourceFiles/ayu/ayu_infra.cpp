@@ -6,8 +6,6 @@
 // Copyright @Radolyn, 2026
 #include "ayu/ayu_infra.h"
 
-#include "settings.h"
-
 #include "ayu/ayu_lang.h"
 #include "ayu/ayu_settings.h"
 #include "ayu/ayu_ui_settings.h"
@@ -47,16 +45,6 @@ void initUiSettings() {
 	AyuUiSettings::setMaterialSwitches(settings.materialSwitches());
 	AyuUiSettings::setAvatarCorners(settings.avatarCorners());
 	Ui::SetAppliedBubbleRadius(settings.messageBubbleRadius());
-
-	// silentgram: наша тема ставится сразу, если файл лежит в tdata.
-	// тот же вызов, что делает кнопка выбора темы в настройках,
-	// но без сохранения ключа — тема живёт на файле и переживает перезапуск.
-	const auto themePath = cWorkingDir() + u"tdata/silentgram.tdesktop-theme"_q;
-	if (QFile::exists(themePath)) {
-		if (Window::Theme::Apply(themePath)) {
-			LOG(("Silentgram: applied theme from %1").arg(themePath));
-		}
-	}
 }
 
 void initDatabase() {

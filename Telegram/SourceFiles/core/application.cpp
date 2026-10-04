@@ -509,6 +509,15 @@ void Application::startSettingsAndBackground() {
 	checkSystemDarkMode();
 	Ui::SetScreenReaderModeDisabled(
 		settings().readPref<bool>(kScreenReaderModeDisabledKey));
+
+	// silentgram: тема из tdata применяется после инициализации фона,
+	// иначе ChatBackground::initialRead() перетирает палитру дефолтной темой.
+	const auto themePath = cWorkingDir() + u"tdata/silentgram.tdesktop-theme"_q;
+	if (QFile::exists(themePath)) {
+		if (Window::Theme::Apply(themePath)) {
+			LOG(("Silentgram: applied theme from %1").arg(themePath));
+		}
+	}
 }
 
 void Application::checkSystemDarkMode() {
