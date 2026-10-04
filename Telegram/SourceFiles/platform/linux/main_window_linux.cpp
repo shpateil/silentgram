@@ -21,6 +21,7 @@ https://github.com/telegramdesktop/tdesktop/blob/master/LEGAL
 #include "boxes/about_box.h"
 #include "lang/lang_keys.h"
 #include "storage/localstorage.h"
+#include "ayu/ayu_settings.h"
 #include "window/window_controller.h"
 #include "window/window_session_controller.h"
 #include "base/platform/base_platform_info.h"
@@ -154,8 +155,16 @@ void MainWindow::updateWindowIcon() {
 }
 
 void MainWindow::updateUnityCounter() {
+	// silentgram: счётчик непрочитанных в трее выключен,
+	// показывается только точка. управляется настройкой
+	// ayu/hideNotificationBadge. вернуть цифры — false в json.
+	const auto showCounters = !AyuSettings::getInstance().hideNotificationBadge();
 #if QT_VERSION >= QT_VERSION_CHECK(6, 6, 0)
-	qApp->setBadgeNumber(Core::App().unreadBadge());
+	if (showCounters) {
+		qApp->setBadgeNumber(Core::App().unreadBadge());
+	} else {
+		qApp->setBadgeNumber(0);
+	}
 #else // Qt >= 6.6.0
 	using namespace gi::repository;
 
@@ -171,7 +180,9 @@ void MainWindow::updateUnityCounter() {
 		+ QGuiApplication::desktopFileName().toStdString()
 		+ ".desktop";
 
-	const auto counterSlice = std::min(Core::App().unreadBadge(), 9999);
+	const auto counterSlice = showCounters
+		? std::min(Core::App().unreadBadge(), 9999)
+		: 0;
 
 	auto connection = Gio::bus_get_sync(Gio::BusType::SESSION_, nullptr);
 	if (!connection) {
@@ -221,7 +232,7 @@ void MainWindow::createGlobalMenu() {
 		});
 
 	auto quit = file->addAction(
-		tr::lng_mac_menu_quit_telegram(tr::now, lt_telegram, u"AyuGram"_q),
+		tr::lng_mac_menu_quit_telegram(tr::now, lt_telegram, u"silentgram"_q),
 		this,
 		[=] { quitFromTray(); },
 		QKeySequence::Quit);
@@ -420,7 +431,7 @@ void MainWindow::createGlobalMenu() {
 		tr::lng_mac_menu_about_telegram(
 			tr::now,
 			lt_telegram,
-			u"AyuGram"_q),
+			u"silentgram"_q),
 		[=] {
 			ensureWindowShown();
 			controller().show(Box(AboutBox, sessionController()));

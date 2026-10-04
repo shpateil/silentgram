@@ -1404,7 +1404,7 @@ void CheckPollVoteNotificationSchedule(
 [[nodiscard]] TextWithEntities UnsupportedMessageText() {
 	const auto siteLink = u"https://t.me/AyuGramReleases"_q;
 	auto result = TextWithEntities{
-		tr::lng_message_unsupported(tr::now, lt_link, siteLink).replace("Telegram", "AyuGram")
+		tr::lng_message_unsupported(tr::now, lt_link, siteLink).replace("Telegram", "silentgram")
 	};
 	TextUtilities::ParseEntities(result, Ui::ItemTextNoMonoOptions().flags);
 	result.entities.push_front(
@@ -1419,7 +1419,7 @@ HistoryMessageMarkupData UnsupportedMessageMarkup() {
 	auto row = std::vector<Button>();
 	row.emplace_back(
 		Button::Type::Url,
-		tr::lng_update_telegram(tr::now).replace("Telegram", "AyuGram"),
+		tr::lng_update_telegram(tr::now).replace("Telegram", "silentgram"),
 		Button::Visual(),
 		QByteArray("https://t.me/AyuGramReleases"));
 	markup.rows.push_back(std::move(row));
