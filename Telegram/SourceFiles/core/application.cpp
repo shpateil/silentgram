@@ -5,6 +5,7 @@ the official desktop application for the Telegram messaging service.
 For license and copyright information please follow this link:
 https://github.com/telegramdesktop/tdesktop/blob/master/LEGAL
 */
+Modified for silentgram (https://github.com/shpateil/silentgram), 2026-10-04.
 #include "core/application.h"
 
 #include "data/data_abstract_structure.h"
@@ -510,13 +511,22 @@ void Application::startSettingsAndBackground() {
 	Ui::SetScreenReaderModeDisabled(
 		settings().readPref<bool>(kScreenReaderModeDisabledKey));
 
-	// silentgram: тема из tdata применяется после инициализации фона,
-	// иначе ChatBackground::initialRead() перетирает палитру дефолтной темой.
-	const auto themePath = cWorkingDir() + u"tdata/silentgram.tdesktop-theme"_q;
-	if (QFile::exists(themePath)) {
-		if (Window::Theme::Apply(themePath)) {
-			LOG(("Silentgram: applied theme from %1").arg(themePath));
-		}
+	// silentgram: тема лежит в ресурсах бинаря, при первом запуске
+	// копируется в tdata, дальше применяется оттуда. так она переживает
+	// перезапуск и не зависит от ключа в зашифрованном settingss.
+	// применяем после инициализации фона, иначе ChatBackground::initialRead()
+	// перетирает палитру дефолтной темой.
+	// ApplyDefaultWithPath + KeepApplied, а не Apply: Apply оставляет тему
+	// в режиме предпросмотра, и любой последующий KeepApplied её сбросит.
+	const auto themeInTdata = cWorkingDir()
+		+ u"tdata/silentgram.tdesktop-theme"_q;
+	if (!QFile::exists(themeInTdata)) {
+		QFile::copy(":/gui/silentgram.tdesktop-theme", themeInTdata);
+	}
+	if (QFile::exists(themeInTdata)) {
+		Window::Theme::ApplyDefaultWithPath(themeInTdata);
+		Window::Theme::KeepApplied();
+		LOG(("Silentgram: applied theme from %1").arg(themeInTdata));
 	}
 }
 

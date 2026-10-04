@@ -4,20 +4,33 @@
 берёт вшитую тёмную тему ayugram за основу и перекрашивает её в схему
 твоих сайтов: чёрный фон, холодные серые слои, розовый единственным акцентом.
 
+Copyright (C) 2026 shpateil
+часть silentgram, распространяется под gpl-3.0 с исключением openssl,
+как tdesktop и ayugram. за основу взята тема AyuGramDesktop,
+Copyright @Radolyn, 2026, всё производное — под той же лицензией.
+
 важно: в теме значения часто ссылаются на другие ключи (windowBg: lightButtonBg).
 поэтому сначала раскрываем ссылки в конкретные цвета, потом красим.
 иначе подмена не срабатывает и в файле остаются старые синие.
 """
 
 import io
+import os
 import re
 import sys
 import zipfile
 from pathlib import Path
 
-UPSTREAM = Path("/media/raid0/silentgram/upstream")
+UPSTREAM = Path(
+    os.environ.get("SILENTGRAM_UPSTREAM", Path(__file__).parent / "upstream")
+)
 BASE_THEME = UPSTREAM / "Telegram/Resources/night.tdesktop-theme"
-DEST = Path("/media/raid0/silentgram/app/themes/silentgram.tdesktop-theme")
+DEST = Path(
+    os.environ.get(
+        "SILENTGRAM_THEME_OUT",
+        Path(__file__).parent / "Telegram/Resources/silentgram.tdesktop-theme",
+    )
+)
 
 # ── схема цветов, значения сняты с твоих сайтов ─────────────────────────
 BG        = "#0a0a0c"   # фон, почти чёрный с холодным оттенком

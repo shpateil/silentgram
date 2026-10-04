@@ -5,6 +5,7 @@ the official desktop application for the Telegram messaging service.
 For license and copyright information please follow this link:
 https://github.com/telegramdesktop/tdesktop/blob/master/LEGAL
 */
+Modified for silentgram (https://github.com/shpateil/silentgram), 2026-10-04.
 #include "platform/linux/main_window_linux.h"
 
 #include "platform/linux/specific_linux.h"
@@ -21,7 +22,6 @@ https://github.com/telegramdesktop/tdesktop/blob/master/LEGAL
 #include "boxes/about_box.h"
 #include "lang/lang_keys.h"
 #include "storage/localstorage.h"
-#include "ayu/ayu_settings.h"
 #include "window/window_controller.h"
 #include "window/window_session_controller.h"
 #include "base/platform/base_platform_info.h"
@@ -155,16 +155,8 @@ void MainWindow::updateWindowIcon() {
 }
 
 void MainWindow::updateUnityCounter() {
-	// silentgram: счётчик непрочитанных в трее выключен,
-	// показывается только точка. управляется настройкой
-	// ayu/hideNotificationBadge. вернуть цифры — false в json.
-	const auto showCounters = !AyuSettings::getInstance().hideNotificationBadge();
 #if QT_VERSION >= QT_VERSION_CHECK(6, 6, 0)
-	if (showCounters) {
-		qApp->setBadgeNumber(Core::App().unreadBadge());
-	} else {
-		qApp->setBadgeNumber(0);
-	}
+	qApp->setBadgeNumber(Core::App().unreadBadge());
 #else // Qt >= 6.6.0
 	using namespace gi::repository;
 
@@ -180,9 +172,7 @@ void MainWindow::updateUnityCounter() {
 		+ QGuiApplication::desktopFileName().toStdString()
 		+ ".desktop";
 
-	const auto counterSlice = showCounters
-		? std::min(Core::App().unreadBadge(), 9999)
-		: 0;
+	const auto counterSlice = std::min(Core::App().unreadBadge(), 9999);
 
 	auto connection = Gio::bus_get_sync(Gio::BusType::SESSION_, nullptr);
 	if (!connection) {
